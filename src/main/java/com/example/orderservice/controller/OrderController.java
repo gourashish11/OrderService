@@ -3,8 +3,10 @@ package com.example.orderservice.controller;
 import com.example.orderservice.dto.OrderDTO;
 import com.example.orderservice.dto.ProductDTO;
 import com.example.orderservice.entity.Order;
+import com.example.orderservice.error.ProductNotFoundException;
 import com.example.orderservice.repository.OrderRepository;
 import com.example.orderservice.service.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -36,10 +38,10 @@ public class OrderController {
     }
 
     @PostMapping("/getOrder")
-    public ResponseEntity<?> getOrder(@RequestBody OrderDTO orderDTO) {
+    public ResponseEntity<?> getOrder(@Valid @RequestBody OrderDTO orderDTO) {
         OrderDTO orderResponse = orderService.getOrderById(orderDTO.getId());
         if (orderResponse == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");
+            throw new ProductNotFoundException("Product not found on" + orderDTO.getId());
         }
         return ResponseEntity.ok(orderResponse);
 

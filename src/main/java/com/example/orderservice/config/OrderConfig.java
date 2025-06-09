@@ -12,8 +12,8 @@ public class OrderConfig {
     public CommandLineRunner init(OrderRepository orderRepository) {
         return args -> {
             orderRepository.deleteAll();
-            Order order1 = new Order(3L,1L);
-            Order order2 = new Order(4L,2L);
+            Order order1 = new Order(1L, 3L,1L);
+            Order order2 = new Order(2L,4L,2L);
             orderRepository.save(order1);
             orderRepository.save(order2);
 
